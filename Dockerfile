@@ -128,7 +128,7 @@ RUN set -ex \
     && make -j"$(nproc)" \
     && make install \
     && gem update --system $RUBYGEMS_VERSION \
-    && rm -r /usr/src/ruby \
+    && rm -r /usr/src/ruby && cd / \
     && gem install bundler --version "$BUNDLER_VERSION" \
     && mkdir -p "$GEM_HOME" "$BUNDLE_BIN" \
 	&& chmod 777 "$GEM_HOME" "$BUNDLE_BIN"
