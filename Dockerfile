@@ -143,6 +143,7 @@ RUN git clone https://github.com/grpc/grpc.git /var/local/git/grpc \
     && ./configure --prefix=/usr \
     && make -j12 && make check && make install && make clean \
     && cd /var/local/git/grpc && make install \
+    && mkdi -p ${GOPATH}/src/google/ \
     && ln -s /var/local/git/grpc/third_party/protobuf ${GOPATH}/src/google/
 # Get the source from GitHub
 RUN go get -u google.golang.org/grpc
