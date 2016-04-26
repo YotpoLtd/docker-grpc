@@ -142,11 +142,19 @@ RUN git clone https://github.com/grpc/grpc.git /var/local/git/grpc \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
     && make -j12 && make check && make install && make clean \
-    && cd /var/local/git/grpc && make install
+    && cd /var/local/git/grpc && make install \
+    && ln -s /var/local/git/grpc/third_party/protobuf ${GOPATH}/src/google/
 # Get the source from GitHub
-RUN go get google.golang.org/grpc
-# Install protoc-gen-go
-RUN go get github.com/golang/protobuf/protoc-gen-go
+RUN go get -u google.golang.org/grpc
+# Install protoc-gen-go and grpc gateway
+RUN go get -u github.com/gengo/grpc-gateway/{protoc-gen-grpc-gateway,protoc-gen-swagger}
+RUN go get -u github.com/golang/protobuf/{proto,protoc-gen-go}
+RUN go get -u github.com/googleapis/googleapis 2>&1 > /dev/null || true
+COPY Makefile /
+COPY Makefile.inc /
+RUN make -C ${GOPATH}/src/github.com/google/protobuf/src/google/protobuf -f /Makefile
+RUN make -C ${GOPATH}/src/github.com/googleapis/googleapis -f /Makefile
+
 RUN pip install grpcio==${GRPC_PYTHON_VERSION}
 RUN gem install grpc -v ${GRPC_RUBY_VERSION}
 
