@@ -143,8 +143,8 @@ RUN git clone https://github.com/grpc/grpc.git /var/local/git/grpc \
     && ./configure --prefix=/usr \
     && make -j12 && make check && make install && make clean \
     && cd /var/local/git/grpc && make install \
-    && mkdir -p ${GOPATH}/src/google/ \
-    && ln -s /var/local/git/grpc/third_party/protobuf ${GOPATH}/src/google/
+    && mkdir -p ${GOPATH}/src/github.com/google/ \
+    && ln -s /var/local/git/grpc/third_party/protobuf ${GOPATH}/src/github.com/google/
 # Get the source from GitHub
 RUN go get -u google.golang.org/grpc
 # Install protoc-gen-go and grpc gateway
