@@ -148,8 +148,7 @@ RUN git clone https://github.com/grpc/grpc.git /var/local/git/grpc \
 # Get the source from GitHub
 RUN go get -u google.golang.org/grpc
 # Install protoc-gen-go and grpc gateway
-RUN go get -u github.com/gengo/grpc-gateway/{protoc-gen-grpc-gateway,protoc-gen-swagger}
-RUN go get -u github.com/golang/protobuf/{proto,protoc-gen-go}
+RUN go get -u github.com/gengo/grpc-gateway/protoc-gen-grpc-gateway github.com/gengo/grpc-gateway/protoc-gen-swagger github.com/golang/protobuf/proto github.com/golang/protobuf/protoc-gen-go
 RUN go get -u github.com/googleapis/googleapis 2>&1 > /dev/null || true
 COPY Makefile /
 COPY Makefile.inc /
