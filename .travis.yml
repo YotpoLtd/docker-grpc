@@ -1,0 +1,29 @@
+sudo: required
+dist: trusty
+language: generic
+services:
+- docker
+env:
+  matrix:
+  - LANGUAGE=golang VERSION=1.5
+  - LANGUAGE=golang VERSION=1.6
+  - LANGUAGE=golang VERSION=tip
+  global:
+  - secure: cRz5KDT/38sC/QsGR69mL0u6FxYXtjwrEM/l9Nf9A+zFU94rkMAiV+4QP2cHLq1BaYydHYU6gB6b29qkWBpFEWhf1s/ca9CLGnduYoib/UiSqOmcceaSkLucf8S2TYtm8Kjjdw/vz68NmjstHQO2M5E4AL1m5x0ZtQWI1/vQ9in1hzPVXROSX2MU6rV6sVFgAhhlF61wvhJW57Mpefrzw3T6lEItKkBgFPhrVKojnWUaDKZRWC/b7dnjkIjf/ymz7shYHU6jNRMYaSzJZw6zn3FMeO0OYC610n8XlLFTVO81LcQVMDGbTvy16AOGq196b62JMcc86UhAvo6/mlDFZoSzUKNExao0KtC4y6gmNPVPncnJg0UHM0Xp+S6k5/4kqmBLHVFD5o0gMVQhuDszwuHuXwf5L17IHsiPS0xZGmNqsaXvWOJGGONTOmgD6lb+TuixwgiH5ePEd6sCCB4l+6q1bSI5oxqZEJmXIXQ+w49pLvsHukCcBtFIM87Dxu2JHuTUleOP1FeXJds9az7s5VKkLIuIN0S+KA1Am+z2Ys9GZQGK4ExPOWaRmu2Z5kxxpCtjDhvXlt5BD8mxyMTidDyd2jwTtQnGJPqtYbx5ShNrtjsde97WaenuN8A6IUwRiO4jJMfGKWokwWSurlyZstBdkl7dBMTOcTU4JMhR64s=
+  - secure: VZEVwvaOwTXeurOmeKgX0Hh6EP+Fsne9RZMein1B7Q5QJIGX2GMMNGJO1t61sjZWmaxQScE7uqym48kq5Wb/X9rjucpEJQz01rIt7G7tcVBonepY3bSipEJzTj6wJ2U5VBup5i3qWmJHOFj1s3rG8k/hLHBhx/oaDgjEWDKH4FHDc/09WtbT50kQwI/f5rsCPXpudtpMzCTfeRwYjn1bvonl77cDA8lz8l9PYi1MpBr4ev9AGmct6fXqWNhZV4b0TH4KWweEv9QMb5iD3jtCU8JV3i3Fi19GWCPBdkVW1O137Jj9ZnRWFFhEpRlKWZ4PlQcviu7sHj4JKwkxnsQkkGd7IqiUUkkttba5DRrOnb3NaqmD61Mzld4JwuqR6LK310e/fjGbUBq28rv8kd/7GFiwuFuKIHl3oVPtCfpW3J3oKzUIg7ukjGc0D2vNZEKqzl49u4tX7778jiszX5ssjJZvtueruvoUDiDKmYkne9A6Zb5dkF5Jy04PpkmAX7/3BTv0/p0585wV/AKsVz63GtSAgyCO63DTwT1pcdXtf5GIoSkdWl6x5+u8ZJM0VjImTZq0WpCuI+FUoi07HaJ6plW+tzDTVW2XRGPLJywa3IdDe3iU6FdlXjdZzNPLLtVzZtrMfHYT4IfMpCFXowqGdkUO+a7F0DR4sZEv9Ld/6/w=
+  - secure: YzTRjXZk7FOXW6Fy1c95YDJyDwka9VCOOUx1Rsh5NC0aVWpwgNdt2tufzsrkUGwThsqykbEhbfEFQD1u25+APcYXF7uYyyXiEdVe1iCCj04zBDjxaOR/1285RO8yf3G8QrzZQWf0ebiduR2MrEqu57WyPXs9bu1dJGWM/6ugzzkzzjkTZihnLIMgXEoXsBp8YQFL9yxTsvFnRF7dMF6+/aBD2VpZS6fQCvOaGrF7v2OmSZygk3SOVpDc0LsdfiHOgbwlHRpUJSw7ONgIHPwOyuIg6ZnN3P9A465hb+lpJaeXAI5uq0U0/RCLrh41R7lu5dtXkSTqaTXQPbVPRlpbUm+lxHVp2LnMHuBsKHwTiq4hdDPej1G+UJlDUA/5loHWyo+4wE9zTm+SN099s4B79t8ueJjQbhbXBT951IzVHRBG3Mip63RD8aJFQ8lp07Ete7VaAPQlc1RJRIPTqP39fXZCh7c57ERoIEaU73zT+atr6f+NcJzSoLvdrHUgkPZBg4IK0NgYXRFVihZmHcTQqv9GakLo+GajdX4ZVg7CaMD6IWICErNqeoTqWvOf8mBg9msCDCYeY8kPhvvI9LEcfqBwZ5cbi4myZO0NQU8pUFxgnka8TuIZYinf8EZXGKP+aHCXhjD7MnNeAf2OC/qcEfoKj3mrCA9srUxynyhPqDE=
+  - REPO=yotpo/grpc
+  - COMMIT=${TRAVIS_COMMIT::8}
+matrix:
+  allow_failures:
+  - env: LANGUAGE=golang VERSION=tip
+  - env: LANGUAGE=golang VERSION=1.5
+install:
+- export TAG="${LANGUAGE}-${VERSION}-$(if [ "$TRAVIS_BRANCH" == "master" ]; then echo -n "latest"; else echo -n $TRAVIS_BRANCH ; fi)"
+- env
+- docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USER" -p="$DOCKER_PASS"
+script:
+- docker build -f ${LANGUAGE}/${VERSION}/Dockerfile -t $REPO:$TAG .
+after_success:
+- docker tag $REPO:$TAG $REPO:travis-$TRAVIS_JOB_NUMBER
+- docker push $REPO
